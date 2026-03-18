@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Home, Users, ArrowLeftRight, Trophy, User } from 'lucide-react';
+import { Home, Users, ArrowLeftRight, User } from 'lucide-react';
 import { useState } from 'react';
 
 type NavItem = {
@@ -12,7 +12,6 @@ const navItems: NavItem[] = [
   { id: 'inicio', icon: Home, label: 'Inicio' },
   { id: 'equipo', icon: Users, label: 'Equipo' },
   { id: 'traspasos', icon: ArrowLeftRight, label: 'Traspasos' },
-  { id: 'ligas', icon: Trophy, label: 'Ligas' },
   { id: 'perfil', icon: User, label: 'Perfil' }
 ];
 
