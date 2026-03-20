@@ -53,12 +53,14 @@ export function BottomNavigation({ activeTab, onChange }: BottomNavigationProps)
               )}
 
               <Icon
-                className={`w-6 h-6 relative z-10 transition-colors ${isActive ? 'text-[#00ff85]' : 'text-white/50'
-                  }`}
+                className={`w-6 h-6 relative z-10 transition-colors ${
+                  isActive ? 'text-[#00ff85]' : 'text-white/50'
+                }`}
               />
               <span
-                className={`text-xs font-medium relative z-10 transition-colors ${isActive ? 'text-[#00ff85]' : 'text-white/50'
-                  }`}
+                className={`text-xs font-medium relative z-10 transition-colors ${
+                  isActive ? 'text-[#00ff85]' : 'text-white/50'
+                }`}
               >
                 {item.label}
               </span>

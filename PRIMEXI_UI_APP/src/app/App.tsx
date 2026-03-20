@@ -15,6 +15,7 @@ import { RevelationPlayer } from './components/RevelationPlayer';
 import { NewsIntelligence } from './components/NewsIntelligence';
 import { BottomNavigation, type BottomNavId } from './components/BottomNavigation';
 import { TeamFormation } from './components/TeamFormation';
+import TransfersPage from './transfers/page';
 
 const transfers = [
   { inPlayer: 'Ollie Watkins', outPlayer: 'Darwin Nunez' },
@@ -61,15 +62,7 @@ export default function App() {
             <TeamFormation />
           </main>
         ) : activeTab === 'traspasos' ? (
-          <main className="px-4 pb-28 pt-8 flex flex-col items-center justify-center min-h-[70vh] space-y-4">
-            <div className="w-20 h-20 rounded-full bg-[#04f5ff]/10 border border-[#04f5ff]/30 flex items-center justify-center">
-              <ArrowRightLeft className="w-10 h-10 text-[#04f5ff]" />
-            </div>
-            <h2 className="text-xl font-bold text-white">Próximamente</h2>
-            <p className="text-sm text-white/50 text-center max-w-[250px]">
-              El módulo de traspasos está en desarrollo. Pronto podrás gestionar tus fichajes aquí.
-            </p>
-          </main>
+          <TransfersPage />
         ) : activeTab === 'perfil' ? (
           <main className="px-4 pb-28 pt-8 space-y-6">
             <header className="flex items-center gap-4 rounded-3xl border border-[#00ff85]/20 bg-[#2a0029]/70 p-4 shadow-[0_20px_45px_-30px_rgba(0,0,0,0.9)]">
