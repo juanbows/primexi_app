@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'motion/react';
 import { Clock } from 'lucide-react';
 
@@ -14,41 +14,75 @@ interface CountdownTimerProps {
 }
 
 export function CountdownTimer({ gameweek }: CountdownTimerProps) {
-  // Mock countdown - in a real app this would be based on actual deadline
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: 2,
-    hours: 14,
-    minutes: 35,
-    seconds: 42
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
   });
+  const [deadline, setDeadline] = useState<Date | null>(null);
+  const [nextGameweek, setNextGameweek] = useState<number | null>(null);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+
+  const displayGameweek = useMemo(
+    () => nextGameweek ?? gameweek,
+    [nextGameweek, gameweek]
+  );
+
+  const computeTimeLeft = (target: Date): TimeLeft => {
+    const diff = target.getTime() - Date.now();
+    if (diff <= 0) {
+      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    }
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / (24 * 60 * 60));
+    const hours = Math.floor((totalSeconds % (24 * 60 * 60)) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return { days, hours, minutes, seconds };
+  };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        let { days, hours, minutes, seconds } = prev;
-        
-        if (seconds > 0) {
-          seconds--;
-        } else if (minutes > 0) {
-          minutes--;
-          seconds = 59;
-        } else if (hours > 0) {
-          hours--;
-          minutes = 59;
-          seconds = 59;
-        } else if (days > 0) {
-          days--;
-          hours = 23;
-          minutes = 59;
-          seconds = 59;
+    const controller = new AbortController();
+
+    const loadDeadline = async () => {
+      try {
+        setStatus('loading');
+        const res = await fetch('/api/fpl/next-deadline', {
+          signal: controller.signal,
+        });
+        if (!res.ok) {
+          throw new Error('Failed to load FPL data');
         }
-        
-        return { days, hours, minutes, seconds };
-      });
+        const data: { gameweek: number; deadlineTime: string } = await res.json();
+        const deadlineDate = new Date(data.deadlineTime);
+        setDeadline(deadlineDate);
+        setNextGameweek(data.gameweek);
+        setTimeLeft(computeTimeLeft(deadlineDate));
+        setStatus('ready');
+      } catch (error) {
+        if ((error as Error).name !== 'AbortError') {
+          setStatus('error');
+        }
+      }
+    };
+
+    loadDeadline();
+
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    if (!deadline) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft(computeTimeLeft(deadline));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [deadline]);
 
   const TimeUnit = ({ value, label }: { value: number; label: string }) => (
     <div className="flex items-baseline gap-1">
@@ -74,7 +108,7 @@ export function CountdownTimer({ gameweek }: CountdownTimerProps) {
     >
       <div className="flex items-center justify-center gap-2 mb-3">
         <Clock className="w-5 h-5 text-[#04f5ff]" />
-        <h2 className="text-sm text-white font-medium">Deadline Countdown GW{gameweek}:</h2>
+        <h2 className="text-sm text-white font-medium">Deadline Countdown GW{displayGameweek}:</h2>
       </div>
       
       <div className="flex items-center justify-center gap-3">
@@ -88,8 +122,17 @@ export function CountdownTimer({ gameweek }: CountdownTimerProps) {
       </div>
       
       <p className="text-center text-xs text-white/60 mt-3">
-        Tiempo restante para GW{gameweek}
+        {status === 'loading'
+          ? 'Cargando deadline en tiempo real...'
+          : status === 'error'
+          ? 'No se pudo cargar la deadline en tiempo real'
+          : `Tiempo restante para GW${displayGameweek}`}
       </p>
+      {status === 'ready' && deadline && (
+        <p className="text-center text-[11px] text-white/45 mt-1">
+          Deadline local: {deadline.toLocaleString()}
+        </p>
+      )}
     </motion.div>
   );
 }

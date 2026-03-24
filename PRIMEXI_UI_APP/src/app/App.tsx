@@ -17,7 +17,7 @@ import { RevelationPlayer } from './components/RevelationPlayer';
 import { NewsIntelligence } from './components/NewsIntelligence';
 import { BottomNavigation, type BottomNavId } from './components/BottomNavigation';
 import { TeamFormation } from './components/TeamFormation';
-import TransfersPage from './transfers/page';
+import TransfersPage from './transfers/TransfersPage';
 
 const transfers = [
   { inPlayer: 'Ollie Watkins', outPlayer: 'Darwin Nunez' },

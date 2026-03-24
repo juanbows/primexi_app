@@ -3,6 +3,8 @@ import { motion } from 'motion/react';
 import logo from '@/assets/b0f62bc00bc3ad9bbabb668780d54a186060d759.png';
 
 export function Header() {
+  const logoSrc = typeof logo === 'string' ? logo : logo.src;
+
   return (
     <motion.header
       className="flex items-center justify-between p-4"
@@ -11,7 +13,7 @@ export function Header() {
       transition={{ duration: 0.5 }}
     >
       <div className="flex items-center gap-3">
-        <img src={logo} alt="PRIME XI" className="h-12" />
+        <img src={logoSrc} alt="PRIME XI" className="h-12" />
       </div>
 
       <motion.div
