@@ -28,7 +28,6 @@ const transfers = [
 export default function App() {
   const [currentGameweek, setCurrentGameweek] = useState(24);
   const [activeTab, setActiveTab] = useState<BottomNavId>('inicio');
-  const [insightOpen, setInsightOpen] = useState(false);
 
   const gwSummary = {
     fixture: currentGameweek % 2 === 0 ? 'low' : 'medium',
@@ -36,21 +35,6 @@ export default function App() {
     injuries: currentGameweek % 4 === 0 ? 'high' : 'low',
   } as const;
 
-  const strategicInsight = {
-    chip: 'Wildcard',
-    confidence: 'High',
-    reason: 'Multiple low xP starters and a rough fixture run.',
-    detail:
-      'Four starters are projected under 3.0 xP, and you have 0.5m tied in low-value assets. A wildcard resets value and targets form players.',
-    alternative: 'Alternative: Wait 2 GW (+2.5 xP).',
-  };
-
-  const confidenceStyle =
-    strategicInsight.confidence === 'High'
-      ? 'text-[#00ff85] border-[#00ff85]/40 bg-[#00ff85]/10'
-      : strategicInsight.confidence === 'Medium'
-      ? 'text-[#7c3aed] border-[#7c3aed]/40 bg-[#7c3aed]/10'
-      : 'text-white/60 border-white/20 bg-white/5';
 
   const statusColor = (level: 'low' | 'medium' | 'high') => {
     if (level === 'high') {
@@ -232,46 +216,7 @@ export default function App() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, delay: 0.05 }}
-                >
-                  <motion.button
-                    type="button"
-                    onClick={() => setInsightOpen((prev) => !prev)}
-                    className="w-full rounded-3xl border border-[#00ff85]/20 bg-[#2a0029]/70 p-4 text-left shadow-[0_20px_45px_-30px_rgba(0,0,0,0.9)]"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: 0.1 }}
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-xs uppercase tracking-[0.3em] text-white/60">
-                          Strategic Insight
-                        </p>
-                        <p className="mt-2 flex items-center gap-2 text-lg font-semibold text-[#00ff85]">
-                          <Sparkles className="h-5 w-5" />
-                          {strategicInsight.chip} Recommended
-                        </p>
-                        <p className="mt-1 text-sm text-white/70">
-                          {strategicInsight.reason}
-                        </p>
-                      </div>
-                      <span
-                        className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${confidenceStyle}`}
-                      >
-                        {strategicInsight.confidence}
-                      </span>
-                    </div>
-                    {strategicInsight.alternative && (
-                      <p className="mt-3 text-xs text-white/50">
-                        {strategicInsight.alternative}
-                      </p>
-                    )}
-                    {insightOpen && (
-                      <div className="mt-4 rounded-2xl border border-[#00ff85]/20 bg-[#140015] p-3 text-sm text-white/70">
-                        {strategicInsight.detail}
-                      </div>
-                    )}
-                  </motion.button>
-                </motion.section>
+                />
               </div>
             </main>
           </>

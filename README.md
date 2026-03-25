@@ -16,7 +16,7 @@ Nuestro norte es el diseño premium adaptado al ritmo de vida actual. No creamos
 ---
 
 ## 🛠️ Stack Tecnológico (Optimizado para Performance)
-- **Framework:** [Next.js (App Router)](https://nextjs.org/) - Para renderizado ultra rápido y SEO.
+- **Framework:** [Next.js (Pages Router)](https://nextjs.org/) - Renderizado rápido y rutas simples.
 - **Base de Datos:** [Supabase](https://supabase.com/) - Escalabilidad y tiempo real.
 - **Estilos:** [Tailwind CSS](https://tailwindcss.com/) - Diseño responsivo con enfoque Mobile-First (`min-width: 0px`).
 - **Animaciones:** [Framer Motion](https://www.framer.com/motion/) - Transiciones fluidas de página y componentes.
@@ -43,8 +43,8 @@ Nuestro norte es el diseño premium adaptado al ritmo de vida actual. No creamos
 ---
 
 ## 📂 Centro de Documentación
-1. **[Estrategia Mobile-First](./docs/MOBILE_STRATEGY.md)** (Próximamente)
-2. **[Identidad de Marca (Mobile Adaptive)](../primexi-frontend/primexi-frontend/Docs/BRANDING.md)**
+1. **[Overview del Repo](./docs/REPO_OVERVIEW.md)**
+2. **[Estrategia Mobile-First](./docs/MOBILE_STRATEGY.md)**
 3. **[Misión del Proyecto](./ANTIGRAVITY.md)**
 
 ---

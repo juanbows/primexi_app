@@ -1,11 +1,13 @@
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { Newspaper, TrendingUp, Activity, Info, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 
 type NewsItem = {
   id: number;
   type: 'injury' | 'form' | 'prediction' | 'confirmed';
   title: string;
   description: string;
+  fullText: string;
   probability?: string;
   icon: React.ElementType;
   color: string;
@@ -19,6 +21,8 @@ const news: NewsItem[] = [
     type: 'prediction',
     title: 'De Bruyne - Alta Probabilidad de Jugar',
     description: 'IA predice 90% de probabilidad de titular',
+    fullText:
+      'El modelo combinó tendencia de minutos, carga de entreno y reportes del staff. Señales positivas en la semana elevan la probabilidad de titularidad. Riesgo principal: rotación tardía si el marcador es cómodo.',
     probability: '90%',
     icon: Activity,
     color: '#04f5ff',
@@ -30,6 +34,8 @@ const news: NewsItem[] = [
     type: 'confirmed',
     title: 'Solanke Confirmado',
     description: '+135 managers lo ficharon en las últimas 24h',
+    fullText:
+      'Confirmado en el once inicial según reporte oficial. Opción sólida para capitanía diferencial: buen fixture y alta forma reciente. Se espera participación completa.',
     icon: TrendingUp,
     color: '#00ff85',
     bgColor: 'from-[#00ff85]/20 to-[#00ff85]/5',
@@ -40,6 +46,8 @@ const news: NewsItem[] = [
     type: 'injury',
     title: 'Alerta: Salah Duda',
     description: 'Posible rotación según análisis del equipo',
+    fullText:
+      'Señales mixtas en entrenamientos y carga acumulada. El staff podría limitar minutos si el equipo toma ventaja temprano. Plan recomendado: preparar un sustituto directo en el banquillo.',
     icon: Info,
     color: '#e90052',
     bgColor: 'from-[#e90052]/20 to-[#e90052]/5',
@@ -50,6 +58,8 @@ const news: NewsItem[] = [
     type: 'form',
     title: 'Palmer en Racha',
     description: '4 goles en los últimos 3 partidos',
+    fullText:
+      'Está generando más tiros dentro del área y participa en acciones clave. El xG por 90 se disparó, y su rol a balón parado aumentó.',
     icon: Sparkles,
     color: '#04f5ff',
     bgColor: 'from-[#04f5ff]/20 to-[#04f5ff]/5',
@@ -57,12 +67,24 @@ const news: NewsItem[] = [
   }
 ];
 
-function NewsCard({ item, index }: { item: NewsItem; index: number }) {
+function NewsCard({
+  item,
+  index,
+  isOpen,
+  onToggle,
+}: {
+  item: NewsItem;
+  index: number;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
   const Icon = item.icon;
   
   return (
-    <motion.div
-      className={`relative bg-gradient-to-br ${item.bgColor} rounded-2xl p-5 border-2 ${item.borderColor} backdrop-blur-sm overflow-hidden group cursor-pointer`}
+    <motion.button
+      type="button"
+      onClick={onToggle}
+      className={`relative bg-gradient-to-br ${item.bgColor} rounded-2xl p-5 border-2 ${item.borderColor} backdrop-blur-sm overflow-hidden group cursor-pointer w-full text-left`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.7 + index * 0.1 }}
@@ -118,11 +140,28 @@ function NewsCard({ item, index }: { item: NewsItem; index: number }) {
               </motion.span>
             )}
           </div>
-          <p className="text-white/70 text-xs leading-relaxed">
-            {item.description}
-          </p>
+          {!isOpen && (
+            <p className="text-white/50 text-[11px]">
+              Toca para leer la noticia completa
+            </p>
+          )}
         </div>
       </div>
+
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            className="relative z-10 mt-4 space-y-2 text-white/80 text-xs leading-relaxed"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <p className="text-white/70">{item.description}</p>
+            <p>{item.fullText}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* Shimmer effect on hover */}
       <motion.div
@@ -140,11 +179,13 @@ function NewsCard({ item, index }: { item: NewsItem; index: number }) {
           backgroundSize: '200% 200%'
         }}
       />
-    </motion.div>
+    </motion.button>
   );
 }
 
 export function NewsIntelligence() {
+  const [openId, setOpenId] = useState<number | null>(null);
+
   return (
     <motion.section
       className="space-y-4 pb-20"
@@ -163,7 +204,13 @@ export function NewsIntelligence() {
       
       <div className="grid gap-3">
         {news.map((item, index) => (
-          <NewsCard key={item.id} item={item} index={index} />
+          <NewsCard
+            key={item.id}
+            item={item}
+            index={index}
+            isOpen={openId === item.id}
+            onToggle={() => setOpenId(openId === item.id ? null : item.id)}
+          />
         ))}
       </div>
     </motion.section>
