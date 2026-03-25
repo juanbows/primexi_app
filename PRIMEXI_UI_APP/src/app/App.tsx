@@ -1,7 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
   ArrowRightLeft,
   Award,
+  BarChart3,
+  CalendarDays,
+  ChevronRight,
+  Crown,
+  Settings,
   Shield,
   Sparkles,
   Star,
@@ -25,10 +32,68 @@ const transfers = [
   { inPlayer: 'William Saliba', outPlayer: 'Joachim Andersen' },
 ];
 
+const profileLinks = [
+  {
+    id: 'ranking',
+    label: 'Ranking detallado',
+    description: 'Evolucion, percentil y comparativas',
+    href: '/profile/ranking',
+    icon: BarChart3,
+  },
+  {
+    id: 'gameweeks',
+    label: 'Historial de Gameweeks',
+    description: 'Puntos, hits y banca',
+    href: '/profile/gameweeks',
+    icon: CalendarDays,
+  },
+  {
+    id: 'captain',
+    label: 'Decisiones de capitan',
+    description: 'Aciertos y puntos clave',
+    href: '/profile/captain',
+    icon: Crown,
+  },
+  {
+    id: 'transfers',
+    label: 'Historial de transfers',
+    description: 'Impacto y costos por GW',
+    href: '/profile/transfers',
+    icon: ArrowRightLeft,
+  },
+  {
+    id: 'settings',
+    label: 'Configuracion del perfil',
+    description: 'Cuenta y preferencias',
+    href: '/profile/settings',
+    icon: Settings,
+  },
+];
+
 export default function App() {
   const [currentGameweek, setCurrentGameweek] = useState(24);
   const [activeTab, setActiveTab] = useState<BottomNavId>('inicio');
   const [insightOpen, setInsightOpen] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
+    const tabQuery = router.query.tab;
+    if (typeof tabQuery !== 'string') {
+      return;
+    }
+    const allowedTabs: BottomNavId[] = [
+      'inicio',
+      'equipo',
+      'traspasos',
+      'perfil',
+    ];
+    if (allowedTabs.includes(tabQuery as BottomNavId)) {
+      setActiveTab(tabQuery as BottomNavId);
+    }
+  }, [router.isReady, router.query.tab]);
 
   const gwSummary = {
     fixture: currentGameweek % 2 === 0 ? 'low' : 'medium',
@@ -185,6 +250,45 @@ export default function App() {
                       <span className="text-[#f0b3ff]">{transfer.outPlayer}</span>
                     </div>
                   ))}
+                </div>
+              </div>
+
+              <div className="rounded-3xl border border-[#7c3aed]/30 bg-[#220024]/80 p-4 shadow-[0_16px_45px_-30px_rgba(0,0,0,0.9)]">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold">Explorar perfil</p>
+                    <p className="text-xs text-white/60">
+                      Analisis y configuracion avanzada
+                    </p>
+                  </div>
+                  <span className="rounded-full bg-[#7c3aed]/20 px-2 py-1 text-xs text-[#d9b7ff]">
+                    NUEVO
+                  </span>
+                </div>
+                <div className="mt-4 space-y-2">
+                  {profileLinks.map((link) => {
+                    const Icon = link.icon;
+                    return (
+                      <Link
+                        key={link.id}
+                        href={link.href}
+                        className="group flex items-center gap-3 rounded-2xl border border-white/5 bg-[#140015] px-3 py-3 transition hover:border-[#00ff85]/40 hover:bg-[#1c001d]"
+                      >
+                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#2b002c] text-[#00ff85]">
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold">
+                            {link.label}
+                          </p>
+                          <p className="text-xs text-white/60">
+                            {link.description}
+                          </p>
+                        </div>
+                        <ChevronRight className="h-4 w-4 text-white/40 transition group-hover:text-[#00ff85]" />
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             </section>
