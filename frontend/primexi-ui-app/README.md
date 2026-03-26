@@ -19,9 +19,9 @@
   - Framework: `Next.js`
   - Build Command: `next build`
   - Output Directory: `.next` (managed automatically by Vercel)
-  - Root Directory: `PRIMEXI_UI_APP`
+  - Root Directory: `frontend/primexi-ui-app`
 
-  CLI deploy (from `PRIMEXI_UI_APP/`):
+  CLI deploy (from `frontend/primexi-ui-app/`):
   - `npx vercel --prod`
 
   ## Project structure
