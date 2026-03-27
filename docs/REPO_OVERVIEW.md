@@ -7,6 +7,7 @@ Este repo contiene la vision y la UI mobile-first de PRIME XI. La app principal 
 - `ANTIGRAVITY.md`: mision, rol del asistente y objetivos del producto.
 - `README.md`: vision general y enlaces de documentacion.
 - `docs/`: guias internas.
+- `docs/FPL_API.md`: guia practica de endpoints FPL (publicos/privados, ejemplos y recomendaciones de cache).
 - `PRIMEXI_UI_APP/`: app Next.js (UI).
 
 ### UI (Next.js)
@@ -54,4 +55,3 @@ La UI actual usa una navegacion tipo “tab bar” en `App.tsx`:
 - Mobile-first en layout, tipografia y navegacion.
 - Targets tactiles >= 44px.
 - Fondos oscuros con acentos neon para contraste.
-

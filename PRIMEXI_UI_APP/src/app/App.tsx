@@ -3,12 +3,10 @@ import {
   ArrowRightLeft,
   Award,
   Shield,
-  Sparkles,
   Star,
   Trophy,
   Users,
 } from 'lucide-react';
-import { motion } from 'motion/react';
 import { Header } from './components/Header';
 import { CountdownTimer } from './components/CountdownTimer';
 import { WeekSelector } from './components/WeekSelector';
@@ -47,27 +45,18 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#38003c] via-[#2a0029] to-[#38003c] text-white">
-      <div className="fixed inset-0 opacity-5 pointer-events-none">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-            backgroundSize: '40px 40px',
-          }}
-        />
-      </div>
+    <div className="app-shell text-white">
+      <div className="app-noise" />
 
-      <div className="relative max-w-md mx-auto min-h-screen">
+      <div className="relative mx-auto min-h-screen w-full max-w-md">
         {activeTab === 'equipo' ? (
-          <main className="px-4 pb-28 pt-6 space-y-4">
+          <main className="safe-top px-4 pb-[calc(8.5rem+env(safe-area-inset-bottom))] pt-4 space-y-4">
             <TeamFormation />
           </main>
         ) : activeTab === 'traspasos' ? (
           <TransfersPage />
         ) : activeTab === 'perfil' ? (
-          <main className="px-4 pb-28 pt-8 space-y-6">
+          <main className="safe-top px-4 pb-[calc(8.5rem+env(safe-area-inset-bottom))] pt-6 space-y-6">
             <header className="flex items-center gap-4 rounded-3xl border border-[#00ff85]/20 bg-[#2a0029]/70 p-4 shadow-[0_20px_45px_-30px_rgba(0,0,0,0.9)]">
               <div className="relative">
                 <div className="h-16 w-16 rounded-full bg-gradient-to-br from-[#00ff85] via-[#7c3aed] to-[#00d4ff] p-[2px]">
@@ -176,7 +165,7 @@ export default function App() {
         ) : (
           <>
             <Header />
-            <main className="px-4 pb-24 space-y-6">
+            <main className="px-4 pb-[calc(8rem+env(safe-area-inset-bottom))] pt-2 space-y-6">
               <CountdownTimer gameweek={currentGameweek} />
               <WeekSelector
                 currentGameweek={currentGameweek}
@@ -209,14 +198,8 @@ export default function App() {
 
               <TopPlayers gameweek={currentGameweek} />
               <RevelationPlayer gameweek={currentGameweek} />
-              <div className="space-y-3 -mt-2">
+              <div className="space-y-3">
                 <NewsIntelligence />
-                <motion.section
-                  className="space-y-3"
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: 0.05 }}
-                />
               </div>
             </main>
           </>

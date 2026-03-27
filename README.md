@@ -46,6 +46,7 @@ Nuestro norte es el diseño premium adaptado al ritmo de vida actual. No creamos
 1. **[Overview del Repo](./docs/REPO_OVERVIEW.md)**
 2. **[Estrategia Mobile-First](./docs/MOBILE_STRATEGY.md)**
 3. **[Misión del Proyecto](./ANTIGRAVITY.md)**
+4. **[Guía API FPL](./docs/FPL_API.md)**
 
 ---
 *Diseñado para ganar la liga con elegancia, en cualquier lugar y en cualquier momento.*
