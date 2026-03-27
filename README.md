@@ -43,17 +43,10 @@ Nuestro norte es el diseño premium adaptado al ritmo de vida actual. No creamos
 ---
 
 ## 📂 Centro de Documentación
-1. **[Esquema de Arquitectura](./esquema.md)**
-2. **[Estrategia Mobile-First](./flujos-usuario/mobile-strategy.md)**
-3. **[Misión del Proyecto](./modelo-negocio/mision-antigravity.md)**
-4. **[Roadmap Mobile](./modelo-negocio/roadmap-mobile.md)**
-
-## 🗂️ Nueva Estructura del Repositorio
-- `branding/`: identidad visual y lineamientos de marca.
-- `modelo-negocio/`: visión, estrategia y roadmap del producto.
-- `frontend/primexi-ui-app/`: aplicación Next.js mobile-first.
-- `flujos-usuario/`: diseño de experiencia y journeys UX.
-- `otros/`: respaldos y material histórico/redundante.
+1. **[Overview del Repo](./docs/REPO_OVERVIEW.md)**
+2. **[Estrategia Mobile-First](./docs/MOBILE_STRATEGY.md)**
+3. **[Misión del Proyecto](./ANTIGRAVITY.md)**
+4. **[Guía API FPL](./docs/FPL_API.md)**
 
 ---
 *Diseñado para ganar la liga con elegancia, en cualquier lugar y en cualquier momento.*

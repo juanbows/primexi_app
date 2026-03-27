@@ -1,21 +1,12 @@
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useState } from 'react';
 import {
   ArrowRightLeft,
   Award,
-  BarChart3,
-  CalendarDays,
-  ChevronRight,
-  Crown,
-  Settings,
   Shield,
-  Sparkles,
   Star,
   Trophy,
   Users,
 } from 'lucide-react';
-import { motion } from 'motion/react';
 import { Header } from './components/Header';
 import { CountdownTimer } from './components/CountdownTimer';
 import { WeekSelector } from './components/WeekSelector';
@@ -32,68 +23,9 @@ const transfers = [
   { inPlayer: 'William Saliba', outPlayer: 'Joachim Andersen' },
 ];
 
-const profileLinks = [
-  {
-    id: 'ranking',
-    label: 'Ranking detallado',
-    description: 'Evolucion, percentil y comparativas',
-    href: '/profile/ranking',
-    icon: BarChart3,
-  },
-  {
-    id: 'gameweeks',
-    label: 'Historial de Gameweeks',
-    description: 'Puntos, hits y banca',
-    href: '/profile/gameweeks',
-    icon: CalendarDays,
-  },
-  {
-    id: 'captain',
-    label: 'Decisiones de capitan',
-    description: 'Aciertos y puntos clave',
-    href: '/profile/captain',
-    icon: Crown,
-  },
-  {
-    id: 'transfers',
-    label: 'Historial de transfers',
-    description: 'Impacto y costos por GW',
-    href: '/profile/transfers',
-    icon: ArrowRightLeft,
-  },
-  {
-    id: 'settings',
-    label: 'Configuracion del perfil',
-    description: 'Cuenta y preferencias',
-    href: '/profile/settings',
-    icon: Settings,
-  },
-];
-
 export default function App() {
   const [currentGameweek, setCurrentGameweek] = useState(24);
   const [activeTab, setActiveTab] = useState<BottomNavId>('inicio');
-  const [insightOpen, setInsightOpen] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
-    const tabQuery = router.query.tab;
-    if (typeof tabQuery !== 'string') {
-      return;
-    }
-    const allowedTabs: BottomNavId[] = [
-      'inicio',
-      'equipo',
-      'traspasos',
-      'perfil',
-    ];
-    if (allowedTabs.includes(tabQuery as BottomNavId)) {
-      setActiveTab(tabQuery as BottomNavId);
-    }
-  }, [router.isReady, router.query.tab]);
 
   const gwSummary = {
     fixture: currentGameweek % 2 === 0 ? 'low' : 'medium',
@@ -101,21 +33,6 @@ export default function App() {
     injuries: currentGameweek % 4 === 0 ? 'high' : 'low',
   } as const;
 
-  const strategicInsight = {
-    chip: 'Wildcard',
-    confidence: 'High',
-    reason: 'Multiple low xP starters and a rough fixture run.',
-    detail:
-      'Four starters are projected under 3.0 xP, and you have 0.5m tied in low-value assets. A wildcard resets value and targets form players.',
-    alternative: 'Alternative: Wait 2 GW (+2.5 xP).',
-  };
-
-  const confidenceStyle =
-    strategicInsight.confidence === 'High'
-      ? 'text-[#00ff85] border-[#00ff85]/40 bg-[#00ff85]/10'
-      : strategicInsight.confidence === 'Medium'
-      ? 'text-[#7c3aed] border-[#7c3aed]/40 bg-[#7c3aed]/10'
-      : 'text-white/60 border-white/20 bg-white/5';
 
   const statusColor = (level: 'low' | 'medium' | 'high') => {
     if (level === 'high') {
@@ -128,27 +45,18 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#38003c] via-[#2a0029] to-[#38003c] text-white">
-      <div className="fixed inset-0 opacity-5 pointer-events-none">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-            backgroundSize: '40px 40px',
-          }}
-        />
-      </div>
+    <div className="app-shell text-white">
+      <div className="app-noise" />
 
-      <div className="relative max-w-md mx-auto min-h-screen">
+      <div className="relative mx-auto min-h-screen w-full max-w-md">
         {activeTab === 'equipo' ? (
-          <main className="px-4 pb-28 pt-6 space-y-4">
+          <main className="safe-top px-4 pb-[calc(8.5rem+env(safe-area-inset-bottom))] pt-4 space-y-4">
             <TeamFormation />
           </main>
         ) : activeTab === 'traspasos' ? (
           <TransfersPage />
         ) : activeTab === 'perfil' ? (
-          <main className="px-4 pb-28 pt-8 space-y-6">
+          <main className="safe-top px-4 pb-[calc(8.5rem+env(safe-area-inset-bottom))] pt-6 space-y-6">
             <header className="flex items-center gap-4 rounded-3xl border border-[#00ff85]/20 bg-[#2a0029]/70 p-4 shadow-[0_20px_45px_-30px_rgba(0,0,0,0.9)]">
               <div className="relative">
                 <div className="h-16 w-16 rounded-full bg-gradient-to-br from-[#00ff85] via-[#7c3aed] to-[#00d4ff] p-[2px]">
@@ -252,51 +160,12 @@ export default function App() {
                   ))}
                 </div>
               </div>
-
-              <div className="rounded-3xl border border-[#7c3aed]/30 bg-[#220024]/80 p-4 shadow-[0_16px_45px_-30px_rgba(0,0,0,0.9)]">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold">Explorar perfil</p>
-                    <p className="text-xs text-white/60">
-                      Analisis y configuracion avanzada
-                    </p>
-                  </div>
-                  <span className="rounded-full bg-[#7c3aed]/20 px-2 py-1 text-xs text-[#d9b7ff]">
-                    NUEVO
-                  </span>
-                </div>
-                <div className="mt-4 space-y-2">
-                  {profileLinks.map((link) => {
-                    const Icon = link.icon;
-                    return (
-                      <Link
-                        key={link.id}
-                        href={link.href}
-                        className="group flex items-center gap-3 rounded-2xl border border-white/5 bg-[#140015] px-3 py-3 transition hover:border-[#00ff85]/40 hover:bg-[#1c001d]"
-                      >
-                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#2b002c] text-[#00ff85]">
-                          <Icon className="h-5 w-5" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-semibold">
-                            {link.label}
-                          </p>
-                          <p className="text-xs text-white/60">
-                            {link.description}
-                          </p>
-                        </div>
-                        <ChevronRight className="h-4 w-4 text-white/40 transition group-hover:text-[#00ff85]" />
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
             </section>
           </main>
         ) : (
           <>
             <Header />
-            <main className="px-4 pb-24 space-y-6">
+            <main className="px-4 pb-[calc(8rem+env(safe-area-inset-bottom))] pt-2 space-y-6">
               <CountdownTimer gameweek={currentGameweek} />
               <WeekSelector
                 currentGameweek={currentGameweek}
@@ -329,53 +198,8 @@ export default function App() {
 
               <TopPlayers gameweek={currentGameweek} />
               <RevelationPlayer gameweek={currentGameweek} />
-              <div className="space-y-3 -mt-2">
+              <div className="space-y-3">
                 <NewsIntelligence />
-                <motion.section
-                  className="space-y-3"
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: 0.05 }}
-                >
-                  <motion.button
-                    type="button"
-                    onClick={() => setInsightOpen((prev) => !prev)}
-                    className="w-full rounded-3xl border border-[#00ff85]/20 bg-[#2a0029]/70 p-4 text-left shadow-[0_20px_45px_-30px_rgba(0,0,0,0.9)]"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: 0.1 }}
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-xs uppercase tracking-[0.3em] text-white/60">
-                          Strategic Insight
-                        </p>
-                        <p className="mt-2 flex items-center gap-2 text-lg font-semibold text-[#00ff85]">
-                          <Sparkles className="h-5 w-5" />
-                          {strategicInsight.chip} Recommended
-                        </p>
-                        <p className="mt-1 text-sm text-white/70">
-                          {strategicInsight.reason}
-                        </p>
-                      </div>
-                      <span
-                        className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${confidenceStyle}`}
-                      >
-                        {strategicInsight.confidence}
-                      </span>
-                    </div>
-                    {strategicInsight.alternative && (
-                      <p className="mt-3 text-xs text-white/50">
-                        {strategicInsight.alternative}
-                      </p>
-                    )}
-                    {insightOpen && (
-                      <div className="mt-4 rounded-2xl border border-[#00ff85]/20 bg-[#140015] p-3 text-sm text-white/70">
-                        {strategicInsight.detail}
-                      </div>
-                    )}
-                  </motion.button>
-                </motion.section>
               </div>
             </main>
           </>

@@ -114,9 +114,9 @@ export default function TransfersPage() {
     : '1.5';
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#180019] via-[#120014] to-[#180019] text-white">
-      <div className="mx-auto min-h-screen max-w-md px-4 pb-28 pt-8">
-        <header className="flex items-center justify-between gap-4 rounded-3xl border border-[#00ff85]/20 bg-[#1a001c]/70 p-4 shadow-[0_20px_45px_-30px_rgba(0,0,0,0.9)]">
+    <div className="min-h-screen text-white">
+      <div className="safe-top mx-auto min-h-screen max-w-md px-4 pb-[calc(9.5rem+env(safe-area-inset-bottom))] pt-6">
+        <header className="glass-panel flex items-center justify-between gap-4 rounded-3xl border-[#00ff85]/20 p-4">
           <div>
             <p className="text-xs uppercase tracking-[0.35em] text-white/60">
               Transfers
@@ -274,7 +274,7 @@ export default function TransfersPage() {
         </div>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-[#140015]/95 px-4 py-3 backdrop-blur">
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-[#140015]/90 px-4 py-3 backdrop-blur safe-bottom">
         <div className="mx-auto flex max-w-md items-center justify-between gap-4">
           <div>
             <p className="text-xs text-white/60">Updated xP</p>
